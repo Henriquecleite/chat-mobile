@@ -1,0 +1,12 @@
+{
+  "name": "rn_estudo_2",
+  "displayName": "rn_estudo_2",
+  "expo": {
+    "name": "rn_estudo_2",
+    "slug": "rn_estudo_2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
