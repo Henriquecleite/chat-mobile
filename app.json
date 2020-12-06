@@ -1,9 +1,9 @@
 {
-  "name": "rn_estudo_2",
-  "displayName": "rn_estudo_2",
+  "name": "Chat",
+  "displayName": "Chat",
   "expo": {
-    "name": "rn_estudo_2",
-    "slug": "rn_estudo_2",
+    "name": "Chat",
+    "slug": "Chat",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
