@@ -5,39 +5,25 @@ import {
   TextInput as NativeTextInput,
   Text,
 } from 'react-native'
-import { validate } from '../../utils/validation'
-import colors from '../../constants/colors'
-import { ValueType } from '../../types'
-import { FormElementNames } from '../../constants/formElementNames'
+import { validate } from '../../../utils/validation'
+import colors from '../../../constants/colors'
+import { ValueType } from '../../../types'
+import { FormElementNames } from '../../../constants/formElementNames'
 
-type TextContentType =
-  | 'none'
-  | 'URL'
-  | 'addressCity'
-  | 'addressCityAndState'
-  | 'addressState'
-  | 'countryName'
-  | 'creditCardNumber'
-  | 'emailAddress'
-  | 'familyName'
-  | 'fullStreetAddress'
-  | 'givenName'
-  | 'jobTitle'
-  | 'location'
-  | 'middleName'
-  | 'name'
-  | 'namePrefix'
-  | 'nameSuffix'
-  | 'nickname'
-  | 'organizationName'
-  | 'postalCode'
-  | 'streetAddressLine1'
-  | 'streetAddressLine2'
-  | 'sublocality'
-  | 'telephoneNumber'
-  | 'username'
-  | 'password'
-  | undefined
+type KeyboardType =
+  | 'default'
+  | 'email-address'
+  | 'numeric'
+  | 'phone-pad'
+  | 'number-pad'
+  | 'decimal-pad'
+  | 'visible-password'
+  | 'ascii-capable'
+  | 'numbers-and-punctuation'
+  | 'url'
+  | 'name-phone-pad'
+  | 'twitter'
+  | 'web-search'
 
 type TextInputFormElementsValue = Record<string, string>
 
@@ -49,7 +35,8 @@ interface TextInputProps {
   valueType?: ValueType
   placeholder?: string
   label?: string
-  textContentType?: TextContentType
+  keyboardType?: KeyboardType
+  secureTextEntry?: boolean
   validationErrorMessage?: string
   formElementsValue: TextInputFormElementsValue
   setFormElementsValue: React.Dispatch<
@@ -86,7 +73,8 @@ const TextInput: React.FC<TextInputProps> = ({
   name,
   valueType,
   placeholder,
-  textContentType,
+  keyboardType = 'default',
+  secureTextEntry,
   label,
   validationErrorMessage,
   formElementsValue,
@@ -118,7 +106,8 @@ const TextInput: React.FC<TextInputProps> = ({
     <View>
       {label && <Text style={styles.label}>{label}</Text>}
       <NativeTextInput
-        textContentType={textContentType}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
         value={formElementsValue[name]}
         placeholder={placeholder}
         onChangeText={handleChange}

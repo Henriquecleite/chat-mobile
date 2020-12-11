@@ -7,20 +7,21 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NavigationStackScreenComponent } from 'react-navigation-stack'
+import TextInput from '../components/commons/textInput'
 import colors from '../constants/colors'
 import { email, password } from '../constants/formElementNames'
-import TextInput from '../components/textInput'
 import { isFormValid } from '../utils/validation'
 import { signinRequest } from '../services/auth'
 
 const styles = StyleSheet.create({
-  home: {
+  signinScreen: {
     flex: 1,
     backgroundColor: colors.navy.darker,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  homeForm: {
+  signinForm: {
     width: 300,
     marginVertical: 0,
     marginHorizontal: 16,
@@ -44,7 +45,7 @@ const validationErrorMessages = {
   [password]: 'Invalid password',
 }
 
-const Home = () => {
+const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [formElementsValue, setFormElementsValue] = useState<
     Record<string, string>
   >({
@@ -104,7 +105,7 @@ const Home = () => {
         await AsyncStorage.setItem('userName', userName)
         await AsyncStorage.setItem('token', token)
 
-        // history.push(routesPath.chat)
+        navigation.navigate('ChatPanel')
       } else {
         const {
           data: { message },
@@ -126,16 +127,16 @@ const Home = () => {
   }
 
   return (
-    <View style={styles.home}>
+    <View style={styles.signinScreen}>
       <StatusBar backgroundColor={colors.navy.darkest} />
-      <View style={styles.homeForm}>
+      <View style={styles.signinForm}>
         <View style={styles.formElementWrapper}>
           <TextInput
             name={email}
             valueType="email"
             label="E-MAIL"
             validationErrorMessage={validationErrorMessages[email]}
-            textContentType="emailAddress"
+            keyboardType="email-address"
             formElementsValue={formElementsValue}
             setFormElementsValue={setFormElementsValue}
             formElementsValidation={formElementsValidation}
@@ -147,8 +148,8 @@ const Home = () => {
           <TextInput
             name={password}
             label="PASSWORD"
+            secureTextEntry
             validationErrorMessage={validationErrorMessages[password]}
-            textContentType="password"
             formElementsValue={formElementsValue}
             setFormElementsValue={setFormElementsValue}
             formElementsValidation={formElementsValidation}
@@ -175,4 +176,9 @@ const Home = () => {
   )
 }
 
-export default Home
+SigninScreen.navigationOptions = {
+  title: 'Teste',
+  headerShown: false,
+}
+
+export default SigninScreen
