@@ -8,11 +8,13 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
+import { useDispatch } from 'react-redux'
 import TextInput from '../components/commons/textInput'
 import colors from '../constants/colors'
 import { email, password } from '../constants/formElementNames'
 import { isFormValid } from '../utils/validation'
 import { signinRequest } from '../services/auth'
+import { setUserId } from '../store/actions'
 
 const styles = StyleSheet.create({
   signinScreen: {
@@ -49,15 +51,15 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [formElementsValue, setFormElementsValue] = useState<
     Record<string, string>
   >({
-    [email]: '',
-    [password]: '',
+    [email]: 'a@a.com',
+    [password]: '1234',
   })
 
   const [formElementsValidation, setFormElementsValidation] = useState<
     Record<string, boolean>
   >({
-    [email]: false,
-    [password]: false,
+    [email]: true,
+    [password]: true,
   })
 
   const [
@@ -66,6 +68,8 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
   ] = useState<boolean>(false)
 
   const [loading, setLoading] = useState<boolean>(false)
+
+  const dispatch = useDispatch()
 
   // const getStorage = async () => {
   //   const token = await AsyncStorage.getItem('token')
@@ -104,6 +108,8 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
         await AsyncStorage.setItem('userId', userId)
         await AsyncStorage.setItem('userName', userName)
         await AsyncStorage.setItem('token', token)
+
+        dispatch(setUserId(userId))
 
         navigation.navigate('ChatPanel')
       } else {

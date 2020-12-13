@@ -1,23 +1,49 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
-// import { useSelector } from 'react-redux'
-// import ChatPanelContact from '../chatPanelContact'
+import { View, StyleSheet } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/vendor/types'
+import { NavigationParams, NavigationRoute } from 'react-navigation'
+import ChatPanelContact from '../chatPanelContact'
+import { RootState } from '../../../store/reducer'
+import colors from '../../../constants/colors'
+import { setConversationSelectedId } from '../../../store/actions'
 
 const styles = StyleSheet.create({
   chatPanelConversations: {
     flex: 1,
-    backgroundColor: 'purple',
+    backgroundColor: colors.navy.medium,
   },
 })
 
-const ChatPanelConversations = () => {
-  // const conversations = useSelector((state) => state)
+interface ChatPanelConversationsProps {
+  navigation: StackNavigationProp<
+    NavigationRoute<NavigationParams>,
+    NavigationParams
+  >
+}
 
-  // console.log('fff', conversations)
+const ChatPanelConversations: React.FC<ChatPanelConversationsProps> = ({
+  navigation,
+}) => {
+  const [
+    conversations,
+    conversationSelectedId,
+  ] = useSelector((state: RootState) => [
+    state.conversations,
+    state.conversationSelectedId,
+  ])
+
+  const dispatch = useDispatch()
+
+  const handlePressOnContact = (conversationId: string) => {
+    navigation.navigate('ChatConversation')
+
+    dispatch(setConversationSelectedId(conversationId))
+  }
 
   return (
     <View style={styles.chatPanelConversations}>
-      {/* {conversations.map((conversation) => {
+      {conversations.map((conversation) => {
         let lastMessageContent
         let lastMessageDate
 
@@ -43,13 +69,12 @@ const ChatPanelConversations = () => {
             lastMessageDate={lastMessageDate}
             lastMessageContent={lastMessageContent}
             contactSelected={conversationSelectedId === conversation._id}
-            handleClick={() => {
-              handleClickOnContact(conversation._id)
+            handlePress={() => {
+              handlePressOnContact(conversation._id)
             }}
           />
         )
-      })} */}
-      <Text>PanelConversatin</Text>
+      })}
     </View>
   )
 }

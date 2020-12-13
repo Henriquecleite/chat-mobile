@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const ChatPanelScreen: NavigationStackScreenComponent = () => {
+const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -54,13 +54,13 @@ const ChatPanelScreen: NavigationStackScreenComponent = () => {
 
   return (
     <View style={styles.chatPanelScreen}>
-      <ChatPanelConversations />
+      <ChatPanelConversations navigation={navigation} />
     </View>
   )
 }
 
 ChatPanelScreen.navigationOptions = ({ navigation }) => ({
-  title: 'AAA',
+  title: 'Teste',
   headerStyle: {
     backgroundColor: colors.navy.light,
   },
