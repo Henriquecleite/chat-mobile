@@ -2,6 +2,7 @@ import {
   SET_CONVERSATIONS,
   SET_CONVERSATION_SELECTED_ID,
   SET_USER_ID,
+  UPDATE_CONVERSATIONS,
 } from './actions'
 import { Conversations, ConversationSelectedId, UserId } from '../types'
 
@@ -33,6 +34,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         conversationSelectedId: action.conversationSelectedId,
+      }
+    case UPDATE_CONVERSATIONS:
+      return {
+        ...state,
+        conversations: action.conversations,
       }
     default:
       return state

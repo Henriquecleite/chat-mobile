@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
+import openSocket from 'socket.io-client'
 import colors from '../constants/colors'
 import ChatPanelConversations from '../components/chatPanelScreen/chatPanelConversations'
 import { getConversationsRequest } from '../services/conversation'
-import { setConversations } from '../store/actions'
+import { setConversations, updateConversations } from '../store/actions'
+import { apiURL } from '../utils/request'
+import { RootState } from '../store/reducer'
+import { Conversation } from '../types'
 
 const styles = StyleSheet.create({
   chatPanelScreen: {
@@ -20,7 +24,13 @@ const styles = StyleSheet.create({
   },
 })
 
+let socket: SocketIOClient.Socket
+
 const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
+  const conversationSelectedId = useSelector(
+    (state: RootState) => state.conversationSelectedId
+  )
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -47,10 +57,16 @@ const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
     fetchConversations()
 
-    // if (apiURL) {
-    //   socket = openSocket(apiURL)
-    // }
+    socket = openSocket(apiURL)
   }, [])
+
+  useEffect(() => {
+    socket.off('message')
+
+    socket.on('message', (socketData: { conversation: Conversation }) => {
+      dispatch(updateConversations(socketData.conversation))
+    })
+  }, [conversationSelectedId])
 
   return (
     <View style={styles.chatPanelScreen}>

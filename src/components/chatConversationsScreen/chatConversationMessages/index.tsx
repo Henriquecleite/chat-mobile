@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   chatConversationMessagesWrapper: {
     paddingTop: 16,
     paddingHorizontal: 16,
+    marginBottom: 4,
     backgroundColor: colors.navy.dark,
   },
   dateBadge: {

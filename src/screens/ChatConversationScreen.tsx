@@ -1,12 +1,18 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useSelector } from 'react-redux'
 import colors from '../constants/colors'
 import ChatConversationMessages from '../components/chatConversationsScreen/chatConversationMessages'
 import { RootState } from '../store/reducer'
+import ChatConversationFooter from '../components/chatConversationsScreen/chatConversationFooter'
 
-// const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  chatConversationScreen: {
+    paddingBottom: 66,
+    backgroundColor: colors.navy.dark,
+  },
+})
 
 const ChatConversationScreen: NavigationStackScreenComponent = () => {
   const [
@@ -28,12 +34,12 @@ const ChatConversationScreen: NavigationStackScreenComponent = () => {
     : []
 
   return (
-    <View>
+    <View style={styles.chatConversationScreen}>
       <ChatConversationMessages
         userId={userId}
         messages={conversationSelectedMessages}
       />
-      {/* <ChatConversationFooter conversationSelectedId={conversationSelectedId} /> */}
+      <ChatConversationFooter conversationSelectedId={conversationSelectedId} />
     </View>
   )
 }

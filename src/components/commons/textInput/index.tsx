@@ -33,6 +33,7 @@ interface TextInputProps {
   name: FormElementNames
   type?: 'text' | 'password'
   valueType?: ValueType
+  variant?: 'default' | 'clear'
   placeholder?: string
   label?: string
   keyboardType?: KeyboardType
@@ -58,8 +59,13 @@ const styles = StyleSheet.create({
   textInput: {
     paddingLeft: 14,
     borderRadius: 4,
-    backgroundColor: colors.navy.dark,
     color: colors.text.white,
+  },
+  defaultTextInput: {
+    backgroundColor: colors.navy.dark,
+  },
+  clearTextInput: {
+    backgroundColor: 'transparent',
   },
   validationError: {
     marginTop: 6,
@@ -72,6 +78,7 @@ const styles = StyleSheet.create({
 const TextInput: React.FC<TextInputProps> = ({
   name,
   valueType,
+  variant = 'default',
   placeholder,
   keyboardType = 'default',
   secureTextEntry,
@@ -110,8 +117,14 @@ const TextInput: React.FC<TextInputProps> = ({
         secureTextEntry={secureTextEntry}
         value={formElementsValue[name]}
         placeholder={placeholder}
+        placeholderTextColor={colors.text.lightBlue}
         onChangeText={handleChange}
-        style={styles.textInput}
+        style={[
+          styles.textInput,
+          variant === 'default'
+            ? styles.defaultTextInput
+            : styles.clearTextInput,
+        ]}
       />
       {formValidationVisibility &&
         formElementsValidation &&
