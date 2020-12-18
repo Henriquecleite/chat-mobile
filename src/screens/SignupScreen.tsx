@@ -5,16 +5,15 @@ import {
   StatusBar,
   Button,
   ActivityIndicator,
-  Text,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useDispatch } from 'react-redux'
 import TextInput from '../components/commons/textInput'
 import colors from '../constants/colors'
-import { email, password } from '../constants/formElementNames'
+import { email, password, name } from '../constants/formElementNames'
 import { isFormValid } from '../utils/validation'
-import { signinRequest } from '../services/auth'
+import { signupRequest } from '../services/auth'
 import { setUserId } from '../store/actions'
 
 const styles = StyleSheet.create({
@@ -41,37 +40,29 @@ const styles = StyleSheet.create({
     top: '48%',
     left: '54%',
   },
-  signupWrapper: {
-    flexDirection: 'row',
-    marginTop: 16,
-  },
-  signupText: {
-    color: colors.text.lightBlue,
-  },
-  signupButton: {
-    marginLeft: 4,
-    color: colors.purple.medium,
-  },
 })
 
 const validationErrorMessages = {
-  [email]: 'Invalid email address',
+  [email]: 'This email address already exists',
+  [name]: 'Invalid name',
   [password]: 'Invalid password',
 }
 
-const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
+const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [formElementsValue, setFormElementsValue] = useState<
     Record<string, string>
   >({
-    [email]: 'a@a.com', // return to ''
-    [password]: '1234',
+    [email]: '',
+    [name]: '',
+    [password]: '',
   })
 
   const [formElementsValidation, setFormElementsValidation] = useState<
     Record<string, boolean>
   >({
-    [email]: true, // return to false
-    [password]: true,
+    [email]: false,
+    [name]: false,
+    [password]: false,
   })
 
   const [
@@ -83,7 +74,7 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   const dispatch = useDispatch()
 
-  const handleClickOnSigninButton = async () => {
+  const handleClickOnSignupButton = async () => {
     if (!formValidationVisibility) {
       setFormValidationVisibility(true)
     }
@@ -91,8 +82,9 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     if (isFormValid(formElementsValidation)) {
       setLoading(true)
 
-      const response = await signinRequest(
+      const response = await signupRequest(
         formElementsValue[email],
+        formElementsValue[name],
         formElementsValue[password]
       )
 
@@ -109,21 +101,16 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
         dispatch(setUserId(userId))
 
-        navigation.navigate('ChatPanel', { userName })
+        navigation.navigate('ChatPanel')
       } else {
         const {
           data: { message },
         } = response
 
-        if (message === 'email incorrect') {
+        if (message === 'email address already exists') {
           setFormElementsValidation({
             ...formElementsValidation,
             [email]: false,
-          })
-        } else if (message === 'password incorrect') {
-          setFormElementsValidation({
-            ...formElementsValidation,
-            [password]: false,
           })
         }
       }
@@ -150,6 +137,18 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
         <View style={styles.formElementWrapper}>
           <TextInput
+            name={name}
+            label="NAME"
+            validationErrorMessage={validationErrorMessages[name]}
+            formElementsValue={formElementsValue}
+            setFormElementsValue={setFormElementsValue}
+            formElementsValidation={formElementsValidation}
+            setFormElementsValidation={setFormElementsValidation}
+            formValidationVisibility={formValidationVisibility}
+          />
+        </View>
+        <View style={styles.formElementWrapper}>
+          <TextInput
             name={password}
             label="PASSWORD"
             secureTextEntry
@@ -163,19 +162,10 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
         <View style={styles.formElementWrapper}>
           <Button
-            onPress={handleClickOnSigninButton}
-            title="Login"
+            onPress={handleClickOnSignupButton}
+            title="Sign up"
             color={colors.purple.medium}
           />
-        </View>
-        <View style={styles.signupWrapper}>
-          <Text style={styles.signupText}>Don't have an account?</Text>
-          <Text
-            style={styles.signupButton}
-            onPress={() => navigation.navigate('Signup')}
-          >
-            Sign Up
-          </Text>
         </View>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator
@@ -189,8 +179,8 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
   )
 }
 
-SigninScreen.navigationOptions = {
+SignupScreen.navigationOptions = {
   headerShown: false,
 }
 
-export default SigninScreen
+export default SignupScreen

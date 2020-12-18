@@ -2,20 +2,27 @@ import {
   SET_CONVERSATIONS,
   SET_CONVERSATION_SELECTED_ID,
   SET_USER_ID,
-  UPDATE_CONVERSATIONS,
+  SET_CHAT_PANEL_MODE,
 } from './actions'
-import { Conversations, ConversationSelectedId, UserId } from '../types'
+import {
+  Conversations,
+  ConversationSelectedId,
+  UserId,
+  ChatPanelMode,
+} from '../types'
 
 export interface RootState {
   userId: UserId
   conversations: Conversations
   conversationSelectedId: ConversationSelectedId
+  chatPanelMode: ChatPanelMode
 }
 
 const initialState: RootState = {
   userId: '',
   conversations: [],
   conversationSelectedId: null,
+  chatPanelMode: 'conversations',
 }
 
 export default (state = initialState, action) => {
@@ -35,10 +42,10 @@ export default (state = initialState, action) => {
         ...state,
         conversationSelectedId: action.conversationSelectedId,
       }
-    case UPDATE_CONVERSATIONS:
+    case SET_CHAT_PANEL_MODE:
       return {
         ...state,
-        conversations: action.conversations,
+        chatPanelMode: action.mode,
       }
     default:
       return state
