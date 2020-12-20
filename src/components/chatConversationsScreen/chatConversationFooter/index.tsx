@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../../constants/colors'
 import { message } from '../../../constants/formElementNames'
 import { addMessageRequest } from '../../../services/conversation'
-import { ConversationSelectedId } from '../../../types'
+import { Conversations, Conversation } from '../../../types'
 import TextInput from '../../commons/textInput'
+import { updateConversations } from '../../../store/actions'
+import { RootState } from '../../../store/reducer'
 
 const styles = StyleSheet.create({
   chatConversationFooterWrapper: {
@@ -27,12 +30,18 @@ const styles = StyleSheet.create({
 })
 
 interface ChatConversationFooterProps {
-  conversationSelectedId: ConversationSelectedId
+  conversationSelected: Conversation
+  conversations: Conversations
 }
 
 const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
-  conversationSelectedId,
+  conversationSelected,
+  conversations,
 }) => {
+  const [userId] = useSelector((state: RootState) => [state.userId])
+
+  const dispatch = useDispatch()
+
   const defaultFormElementsValue = {
     [message]: '',
   }
@@ -43,15 +52,34 @@ const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
     [message]: defaultFormElementsValue[message],
   })
 
+  const { _id: conversationSelectedId, messages } = conversationSelected
+
   const sendMessage = async () => {
     const messageContent = formElementsValue[message]
 
     if (messageContent && conversationSelectedId) {
-      const date = new Date().getTime().toString()
+      const date = new Date().getTime()
+
+      const dateString = date.toString()
+
+      const newConversation: Conversation = {
+        ...conversationSelected,
+        messages: [
+          ...messages,
+          {
+            _id: Math.random().toString(),
+            content: messageContent,
+            date,
+            userId,
+          },
+        ],
+      }
+
+      dispatch(updateConversations(conversations, newConversation))
 
       const messageResponse = await addMessageRequest(
         conversationSelectedId,
-        date,
+        dateString,
         messageContent
       )
 

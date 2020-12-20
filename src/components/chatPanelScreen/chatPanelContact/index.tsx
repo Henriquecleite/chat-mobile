@@ -8,9 +8,6 @@ const styles = StyleSheet.create({
   chatPanelContactWrapper: {
     flexDirection: 'row',
   },
-  chatPanelContactWrapperSelected: {
-    backgroundColor: colors.navy.lighter,
-  },
   pictureWrapper: {
     width: 66,
     paddingVertical: 10,
@@ -68,7 +65,6 @@ interface ChatPanelContactProps {
   contactName: string
   lastMessageDate?: string
   lastMessageContent?: string
-  contactSelected?: boolean
   handlePress: () => void
 }
 
@@ -76,15 +72,11 @@ const ChatPanelContact: React.FC<ChatPanelContactProps> = ({
   contactName,
   lastMessageDate,
   lastMessageContent,
-  contactSelected = false,
   handlePress,
 }) => {
   return (
     <TouchableOpacity
-      style={[
-        styles.chatPanelContactWrapper,
-        contactSelected && styles.chatPanelContactWrapperSelected,
-      ]}
+      style={[styles.chatPanelContactWrapper]}
       onPress={handlePress}
     >
       <View style={styles.pictureWrapper}>

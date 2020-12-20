@@ -1,8 +1,9 @@
+import { Action } from 'redux'
 import {
   SET_CONVERSATIONS,
   SET_CONVERSATION_SELECTED_ID,
   SET_USER_ID,
-  SET_CHAT_PANEL_MODE,
+  UPDATE_CONVERSATIONS,
 } from './actions'
 import {
   Conversations,
@@ -25,7 +26,10 @@ const initialState: RootState = {
   chatPanelMode: 'conversations',
 }
 
-export default (state = initialState, action) => {
+export default (
+  state = initialState,
+  action: Action<Record<string, unknown>>
+) => {
   switch (action.type) {
     case SET_USER_ID:
       return {
@@ -42,10 +46,10 @@ export default (state = initialState, action) => {
         ...state,
         conversationSelectedId: action.conversationSelectedId,
       }
-    case SET_CHAT_PANEL_MODE:
+    case UPDATE_CONVERSATIONS:
       return {
         ...state,
-        chatPanelMode: action.mode,
+        conversations: action.conversations,
       }
     default:
       return state

@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import colors from '../constants/colors'
 import ChatPanelConversations from '../components/chatPanelScreen/chatPanelConversations'
 import { getConversationsRequest } from '../services/conversation'
 import { setConversations } from '../store/actions'
-import { RootState } from '../store/reducer'
+import { ChatPanelMode } from '../types'
+import ChatPanelContactsSearch from '../components/chatPanelScreen/chatPanelContactsSearch'
 
 const styles = StyleSheet.create({
   chatPanelScreen: {
@@ -22,8 +23,8 @@ const styles = StyleSheet.create({
 })
 
 const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
-  const conversationSelectedId = useSelector(
-    (state: RootState) => state.conversationSelectedId
+  const [chatPanelMode, setChatPanelMode] = useState<ChatPanelMode>(
+    'conversations'
   )
 
   const dispatch = useDispatch()
@@ -48,9 +49,29 @@ const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
     setInterval(fetchConversations, 10000)
   }, [])
 
+  useEffect(() => {
+    navigation.setParams({
+      chatPanelMode,
+      toggleChatPanelMode: () => {
+        setChatPanelMode(
+          chatPanelMode === 'conversations' ? 'contactsSearch' : 'conversations'
+        )
+      },
+    })
+  }, [chatPanelMode])
+
   return (
     <View style={styles.chatPanelScreen}>
-      <ChatPanelConversations navigation={navigation} />
+      {chatPanelMode === 'conversations' ? (
+        <ChatPanelConversations navigation={navigation} />
+      ) : (
+        <ChatPanelContactsSearch
+          setChatPanelModeToConversations={() => {
+            setChatPanelMode('conversations')
+          }}
+          navigation={navigation}
+        />
+      )}
     </View>
   )
 }
@@ -65,10 +86,14 @@ ChatPanelScreen.navigationOptions = ({ navigation }) => ({
     <View style={styles.headerRightButtons}>
       <View style={styles.headerRightButtonWrapper}>
         <Ionicons
-          name="md-add"
+          name={
+            navigation.getParam('chatPanelMode') === 'conversations'
+              ? 'md-add'
+              : 'ios-chatboxes'
+          }
           color={colors.white}
           size={26}
-          // onPress={() => console.log('addd')}
+          onPress={navigation.getParam('toggleChatPanelMode')}
         />
       </View>
       <View style={styles.headerRightButtonWrapper}>

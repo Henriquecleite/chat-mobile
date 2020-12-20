@@ -109,7 +109,9 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
         dispatch(setUserId(userId))
 
-        navigation.navigate('ChatPanel', { userName })
+        navigation.navigate('ChatPanel', {
+          userName,
+        })
       } else {
         const {
           data: { message },

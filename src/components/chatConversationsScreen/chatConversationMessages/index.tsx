@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect, RefObject, useState } from 'react'
 import { StyleSheet, ScrollView, Text, View } from 'react-native'
 import {
   getYearMonthDayNumber,
@@ -11,6 +11,7 @@ import { Message, UserId } from '../../../types'
 
 const styles = StyleSheet.create({
   chatConversationMessagesWrapper: {
+    height: '100%',
     paddingTop: 16,
     paddingHorizontal: 16,
     marginBottom: 4,
@@ -69,7 +70,16 @@ const styles = StyleSheet.create({
   },
 })
 
-const addDateBadges = (messages) => {
+interface MessageAndDateBadge {
+  _id: string
+  content: string
+  date?: number
+  userId?: string
+  hourAndMinuteDate?: string
+  dateBadge?: boolean
+}
+
+const addDateBadges = (messages: Message[]) => {
   const messagesWithNumericDate = messages.map((msg) => {
     return {
       ...msg,
@@ -93,7 +103,7 @@ const addDateBadges = (messages) => {
     })
     .filter((dayBadge) => dayBadge)
 
-  const messagesAndDateBadges = messages.map((msg) => {
+  const messagesAndDateBadges: MessageAndDateBadge[] = messages.map((msg) => {
     const date = new Date(msg.date)
 
     const newMsg = {
@@ -107,19 +117,21 @@ const addDateBadges = (messages) => {
   let dateBadgeSpliceIncrement = 0
 
   dateBadges.forEach((dateBadge) => {
-    const dateBadgeContent = convertYearMonthDayNumberToWords(
-      dateBadge.numericDate
-    )
+    if (dateBadge) {
+      const dateBadgeContent = convertYearMonthDayNumberToWords(
+        dateBadge.numericDate
+      )
 
-    messagesAndDateBadges.splice(
-      dateBadge.index + dateBadgeSpliceIncrement,
-      0,
-      {
-        id: `${dateBadge.date}${dateBadge.index}`,
-        content: dateBadgeContent,
-        dateBadge: true,
-      }
-    )
+      messagesAndDateBadges.splice(
+        dateBadge.index + dateBadgeSpliceIncrement,
+        0,
+        {
+          _id: `${dateBadge.date}${dateBadge.index}`,
+          content: dateBadgeContent,
+          dateBadge: true,
+        }
+      )
+    }
 
     dateBadgeSpliceIncrement += 1
   })
@@ -136,34 +148,37 @@ const ChatConversationMessages: React.FC<ChatConversationMessagesProps> = ({
   userId,
   messages,
 }) => {
-  // const messagesWrapperRef = useRef<HTMLInputElement | null>(null)
+  const [lastMessageId, setLastMessageId] = useState('')
 
-  // const [lastMessageId, setLastMessageId] = useState('')
+  const scrollViewRef = useRef() as RefObject<ScrollView>
 
-  // useEffect(() => {
-  //   const newLastMessage = messages[messages.length - 1]
+  const scrollToEnd = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: false })
+  }
 
-  //   const newLastMessageId = newLastMessage && newLastMessage._id
+  useEffect(() => {
+    const newLastMessage = messages[messages.length - 1]
 
-  //   if (
-  //     newLastMessageId !== lastMessageId &&
-  //     messagesWrapperRef &&
-  //     messagesWrapperRef.current
-  //   ) {
-  //     messagesWrapperRef.current.scrollTop =
-  //       messagesWrapperRef.current.scrollHeight
+    const newLastMessageId = newLastMessage && newLastMessage._id
 
-  //     setLastMessageId(newLastMessageId)
-  //   }
-  // }, [messages])
+    if (newLastMessageId !== lastMessageId) {
+      scrollToEnd()
+
+      setLastMessageId(newLastMessageId)
+    }
+  }, [messages])
 
   const messagesAndDateBadges = addDateBadges(messages)
 
   return (
-    <ScrollView style={styles.chatConversationMessagesWrapper}>
+    <ScrollView
+      onLayout={scrollToEnd}
+      ref={scrollViewRef}
+      style={styles.chatConversationMessagesWrapper}
+    >
       {messagesAndDateBadges.map((msg) =>
         msg.dateBadge ? (
-          <Text style={styles.dateBadge} key={msg.id}>
+          <Text style={styles.dateBadge} key={msg._id}>
             {msg.content}
           </Text>
         ) : (

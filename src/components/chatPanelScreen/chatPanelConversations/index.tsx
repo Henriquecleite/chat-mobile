@@ -25,12 +25,8 @@ interface ChatPanelConversationsProps {
 const ChatPanelConversations: React.FC<ChatPanelConversationsProps> = ({
   navigation,
 }) => {
-  const [
-    conversations,
-    conversationSelectedId,
-  ] = useSelector((state: RootState) => [
+  const [conversations] = useSelector((state: RootState) => [
     state.conversations,
-    state.conversationSelectedId,
   ])
 
   const dispatch = useDispatch()
@@ -68,7 +64,6 @@ const ChatPanelConversations: React.FC<ChatPanelConversationsProps> = ({
             contactName={conversation.contactName}
             lastMessageDate={lastMessageDate}
             lastMessageContent={lastMessageContent}
-            contactSelected={conversationSelectedId === conversation._id}
             handlePress={() => {
               handlePressOnContact(conversation._id)
             }}
