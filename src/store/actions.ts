@@ -1,21 +1,46 @@
 import { Conversations, UserId, Conversation } from '../types'
 
-export const SET_USER_ID = 'SET_USER_ID'
-export const SET_CONVERSATIONS = 'SET_CONVERSATIONS'
-export const SET_CONVERSATION_SELECTED_ID = 'SET_CONVERSATION_SELECTED_ID'
-export const UPDATE_CONVERSATIONS = 'UPDATE_CONVERSATIONS'
-
-export const setUserId = (userId: UserId) => {
-  return { type: SET_USER_ID, userId }
+interface SetUserIdAction {
+  type: 'SET_USER_ID'
+  userId: UserId
 }
 
-export const setConversations = (conversations: Conversations) => {
-  return { type: SET_CONVERSATIONS, conversations }
+interface SetConversationsAction {
+  type: 'SET_CONVERSATIONS'
+  conversations: Conversations
 }
 
-export const setConversationSelectedId = (conversationId: string) => {
+interface SetConversationSelectedIdAction {
+  type: 'SET_CONVERSATION_SELECTED_ID'
+  conversationSelectedId: string
+}
+
+interface UpdateConversationsAction {
+  type: 'UPDATE_CONVERSATIONS'
+  conversations: Conversations
+}
+
+export type Actions =
+  | SetUserIdAction
+  | SetConversationsAction
+  | SetConversationSelectedIdAction
+  | UpdateConversationsAction
+
+export const setUserId = (userId: UserId): SetUserIdAction => {
+  return { type: 'SET_USER_ID', userId }
+}
+
+export const setConversations = (
+  conversations: Conversations
+): SetConversationsAction => {
+  return { type: 'SET_CONVERSATIONS', conversations }
+}
+
+export const setConversationSelectedId = (
+  conversationId: string
+): SetConversationSelectedIdAction => {
   return {
-    type: SET_CONVERSATION_SELECTED_ID,
+    type: 'SET_CONVERSATION_SELECTED_ID',
     conversationSelectedId: conversationId,
   }
 }
@@ -23,7 +48,7 @@ export const setConversationSelectedId = (conversationId: string) => {
 export const updateConversations = (
   conversations: Conversations,
   newConversation: Conversation
-) => {
+): UpdateConversationsAction => {
   const conversationIndex = conversations.findIndex(
     (conversation) => conversation._id === newConversation._id
   )
@@ -45,7 +70,7 @@ export const updateConversations = (
   }
 
   return {
-    type: UPDATE_CONVERSATIONS,
+    type: 'UPDATE_CONVERSATIONS',
     conversations: conversationsUpdated,
   }
 }

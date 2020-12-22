@@ -32,10 +32,6 @@ const ChatConversationScreen: NavigationStackScreenComponent = ({
     (conversation) => conversation._id === conversationSelectedId
   ) as Conversation
 
-  // const conversationSelectedMessages = conversationSelected
-  //   ? conversationSelected.messages
-  //   : []
-
   useEffect(() => {
     navigation.setParams({ contactName: conversationSelected?.contactName })
   }, [])

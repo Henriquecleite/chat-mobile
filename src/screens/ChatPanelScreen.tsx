@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useDispatch } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import colors from '../constants/colors'
 import ChatPanelConversations from '../components/chatPanelScreen/chatPanelConversations'
 import { getConversationsRequest } from '../services/conversation'
@@ -84,7 +85,10 @@ ChatPanelScreen.navigationOptions = ({ navigation }) => ({
   headerTintColor: colors.text.white,
   headerRight: () => (
     <View style={styles.headerRightButtons}>
-      <View style={styles.headerRightButtonWrapper}>
+      <TouchableOpacity
+        style={styles.headerRightButtonWrapper}
+        onPress={navigation.getParam('toggleChatPanelMode')}
+      >
         <Ionicons
           name={
             navigation.getParam('chatPanelMode') === 'conversations'
@@ -93,17 +97,14 @@ ChatPanelScreen.navigationOptions = ({ navigation }) => ({
           }
           color={colors.white}
           size={26}
-          onPress={navigation.getParam('toggleChatPanelMode')}
         />
-      </View>
-      <View style={styles.headerRightButtonWrapper}>
-        <Ionicons
-          name="ios-log-out"
-          color={colors.white}
-          size={26}
-          onPress={() => navigation.navigate('Signin')}
-        />
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.headerRightButtonWrapper}
+        onPress={() => navigation.navigate('Signin')}
+      >
+        <Ionicons name="ios-log-out" color={colors.white} size={26} />
+      </TouchableOpacity>
     </View>
   ),
 })
