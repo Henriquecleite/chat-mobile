@@ -40,12 +40,7 @@ module.exports = {
     ],
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
-    'react/jsx-filename-extension': [
-      'error',
-      {
-        extensions: ['.jsx', '.tsx'],
-      },
-    ],
+    'react/jsx-filename-extension': 'off',
     'react/prop-types': 'off',
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/no-unused-vars': [
