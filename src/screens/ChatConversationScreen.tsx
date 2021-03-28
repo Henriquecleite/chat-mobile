@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useSelector } from 'react-redux'
-import colors from '../constants/colors'
+import COLORS from '../constants/colors'
 import ChatConversationMessages from '../components/chatConversationsScreen/chatConversationMessages'
 import { RootState } from '../store/reducer'
 import ChatConversationFooter from '../components/chatConversationsScreen/chatConversationFooter'
@@ -11,7 +11,7 @@ import { Conversation } from '../types'
 const styles = StyleSheet.create({
   chatConversationScreen: {
     paddingBottom: 66,
-    backgroundColor: colors.navy.dark,
+    backgroundColor: COLORS.navy.dark,
   },
 })
 
@@ -53,9 +53,9 @@ const ChatConversationScreen: NavigationStackScreenComponent = ({
 ChatConversationScreen.navigationOptions = ({ navigation }) => ({
   title: navigation.getParam('contactName'),
   headerStyle: {
-    backgroundColor: colors.navy.light,
+    backgroundColor: COLORS.navy.light,
   },
-  headerTintColor: colors.text.white,
+  headerTintColor: COLORS.text.white,
 })
 
 export default ChatConversationScreen

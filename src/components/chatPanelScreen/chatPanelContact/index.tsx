@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import getInitialCapitalized from '../../../utils/string'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 
 const styles = StyleSheet.create({
   chatPanelContactWrapper: {
@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
-    backgroundColor: colors.green.medium,
+    backgroundColor: COLORS.green.medium,
   },
   contactFirstLetter: {
-    color: colors.text.white,
+    color: COLORS.text.white,
     fontWeight: '700',
   },
   infoWrapper: {
@@ -32,20 +32,20 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.navy.dark,
+    borderBottomColor: COLORS.navy.dark,
   },
   contactNameAndDateWrapper: {
     flexDirection: 'row',
   },
   contactName: {
     flex: 1,
-    color: colors.text.white,
+    color: COLORS.text.white,
     fontSize: 16,
     fontWeight: '700',
   },
   lastMessageDate: {
     width: 44,
-    color: colors.text.lightBlue,
+    color: COLORS.text.lightBlue,
     fontSize: 12,
   },
   lastMessageContentAndNotification: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   lastMessageContent: {
     flex: 1,
-    color: colors.text.lightBlue,
+    color: COLORS.text.lightBlue,
     fontSize: 14,
   },
   notification: {

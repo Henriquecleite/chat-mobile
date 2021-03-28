@@ -1,4 +1,4 @@
-const colors = {
+const COLORS = {
   green: {
     medium: '#76c84d',
   },
@@ -33,4 +33,4 @@ const colors = {
   transparent: 'transparent',
 }
 
-export default colors
+export default COLORS

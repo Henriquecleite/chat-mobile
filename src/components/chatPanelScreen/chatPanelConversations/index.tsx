@@ -5,13 +5,13 @@ import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/v
 import { NavigationParams, NavigationRoute } from 'react-navigation'
 import ChatPanelContact from '../chatPanelContact'
 import { RootState } from '../../../store/reducer'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 import { setConversationSelectedId } from '../../../store/actions'
 
 const styles = StyleSheet.create({
   chatPanelConversations: {
     flex: 1,
-    backgroundColor: colors.navy.medium,
+    backgroundColor: COLORS.navy.medium,
   },
 })
 

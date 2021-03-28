@@ -6,7 +6,7 @@ import {
   Text,
 } from 'react-native'
 import { validate } from '../../../utils/validation'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 import { ValueType } from '../../../types'
 import { FormElementNames } from '../../../constants/formElementNames'
 
@@ -54,22 +54,22 @@ interface TextInputProps {
 const styles = StyleSheet.create({
   label: {
     paddingBottom: 10,
-    color: colors.text.lightBlue,
+    color: COLORS.text.lightBlue,
   },
   textInput: {
     paddingLeft: 14,
     borderRadius: 4,
-    color: colors.text.white,
+    color: COLORS.text.white,
   },
   defaultTextInput: {
-    backgroundColor: colors.navy.dark,
+    backgroundColor: COLORS.navy.dark,
   },
   clearTextInput: {
     backgroundColor: 'transparent',
   },
   validationError: {
     marginTop: 6,
-    color: colors.red.medium,
+    color: COLORS.red.medium,
     fontSize: 12,
     fontStyle: 'italic',
   },
@@ -117,7 +117,7 @@ const TextInput: React.FC<TextInputProps> = ({
         secureTextEntry={secureTextEntry}
         value={formElementsValue[name]}
         placeholder={placeholder}
-        placeholderTextColor={colors.text.lightBlue}
+        placeholderTextColor={COLORS.text.lightBlue}
         onChangeText={handleChange}
         style={[
           styles.textInput,

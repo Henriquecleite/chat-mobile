@@ -6,7 +6,7 @@ import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/v
 import { NavigationRoute, NavigationParams } from 'react-navigation'
 import { useSelector, useDispatch } from 'react-redux'
 import ChatPanelContact from '../chatPanelContact'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 import TextInput from '../../commons/textInput'
 import { text } from '../../../constants/formElementNames'
 import getUsersRequest from '../../../services/user'
@@ -22,7 +22,7 @@ import {
 const styles = StyleSheet.create({
   chatPanelContactsSearchWrapper: {
     flex: 1,
-    backgroundColor: colors.navy.medium,
+    backgroundColor: COLORS.navy.medium,
   },
   chatPanelSearchBox: {
     flexDirection: 'row',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.navy.dark,
+    borderBottomColor: COLORS.navy.dark,
   },
   contactTextInputWrapper: {
     flex: 1,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   noContactsFound: {
     marginTop: 24,
-    color: colors.text.lightBlue,
+    color: COLORS.text.lightBlue,
     fontSize: 14,
     textAlign: 'center',
   },
@@ -118,7 +118,7 @@ const ChatPanelContactsSearch: React.FC<ChatPanelContactsSearchProps> = ({
     <View style={styles.chatPanelContactsSearchWrapper}>
       <View style={styles.chatPanelSearchBox}>
         <TouchableOpacity>
-          <Ionicons name="ios-search" color={colors.white} size={26} />
+          <Ionicons name="ios-search" color={COLORS.white} size={26} />
         </TouchableOpacity>
         <View style={styles.contactTextInputWrapper}>
           <TextInput

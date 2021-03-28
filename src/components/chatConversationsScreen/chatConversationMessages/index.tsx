@@ -6,7 +6,7 @@ import {
   getHours,
   getMinutes,
 } from '../../../utils/date'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 import { Message, UserId } from '../../../types'
 
 const styles = StyleSheet.create({
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingHorizontal: 16,
     marginBottom: 4,
-    backgroundColor: colors.navy.dark,
+    backgroundColor: COLORS.navy.dark,
   },
   dateBadge: {
     alignSelf: 'center',
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 16,
-    backgroundColor: colors.navy.light,
-    color: colors.white,
+    backgroundColor: COLORS.navy.light,
+    color: COLORS.white,
     fontSize: 12,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -42,15 +42,15 @@ const styles = StyleSheet.create({
   sentMessageWrapper: {
     alignSelf: 'flex-end',
     marginLeft: 40,
-    backgroundColor: colors.blue.light,
+    backgroundColor: COLORS.blue.light,
   },
   receivedMessageWrapper: {
     alignSelf: 'flex-start',
     marginRight: 40,
-    backgroundColor: colors.navy.lighter,
+    backgroundColor: COLORS.navy.lighter,
   },
   messageContent: {
-    color: colors.white,
+    color: COLORS.white,
     fontSize: 14,
   },
   messageTime: {
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   sentMessageTime: {
-    color: colors.blue.lighter,
+    color: COLORS.blue.lighter,
   },
   receivedMessageTime: {
-    color: colors.text.lightBlue,
+    color: COLORS.text.lightBlue,
   },
   space: {
     height: 16,
-    color: colors.navy.dark,
+    color: COLORS.navy.dark,
   },
 })
 

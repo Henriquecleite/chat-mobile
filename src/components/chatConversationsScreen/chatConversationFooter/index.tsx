@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
-import colors from '../../../constants/colors'
+import COLORS from '../../../constants/colors'
 import { message } from '../../../constants/formElementNames'
 import { addMessageRequest } from '../../../services/conversation'
 import { Conversations, Conversation } from '../../../types'
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: colors.navy.light,
+    backgroundColor: COLORS.navy.light,
   },
   messageTextInputWrapper: {
     flex: 1,
@@ -104,7 +104,7 @@ const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
       </View>
       <View style={styles.sendButtonWrapper}>
         <TouchableOpacity onPress={sendMessage}>
-          <Ionicons name="md-send" color={colors.white} size={26} />
+          <Ionicons name="md-send" color={COLORS.white} size={26} />
         </TouchableOpacity>
       </View>
     </View>
