@@ -1,19 +1,12 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/vendor/types'
 import { NavigationParams, NavigationRoute } from 'react-navigation'
 import ChatPanelContact from '../chatPanelContact'
 import { RootState } from '../../../store/reducer'
-import COLORS from '../../../constants/colors'
 import { setConversationSelectedId } from '../../../store/actions'
-
-const styles = StyleSheet.create({
-  chatPanelConversations: {
-    flex: 1,
-    backgroundColor: COLORS.navy.medium,
-  },
-})
+import styles from './styles'
 
 interface ChatPanelConversationsProps {
   navigation: StackNavigationProp<

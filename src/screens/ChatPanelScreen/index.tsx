@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useDispatch } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import COLORS from '../constants/colors'
-import ChatPanelConversations from '../components/chatPanelScreen/chatPanelConversations'
-import { getConversationsRequest } from '../services/conversation'
-import { setConversations } from '../store/actions'
-import { ChatPanelMode } from '../types'
-import ChatPanelContactsSearch from '../components/chatPanelScreen/chatPanelContactsSearch'
-
-const styles = StyleSheet.create({
-  chatPanelScreen: {
-    flex: 1,
-  },
-  headerRightButtons: {
-    flexDirection: 'row',
-  },
-  headerRightButtonWrapper: {
-    marginHorizontal: 20,
-  },
-})
+import COLORS from '../../constants/colors'
+import ChatPanelConversations from '../../components/chatPanelScreen/chatPanelConversations'
+import ChatPanelContactsSearch from '../../components/chatPanelScreen/chatPanelContactsSearch'
+import { getConversationsRequest } from '../../services/conversation'
+import { setConversations } from '../../store/actions'
+import { ChatPanelMode } from '../../types'
+import styles from './styles'
 
 const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [chatPanelMode, setChatPanelMode] = useState<ChatPanelMode>(

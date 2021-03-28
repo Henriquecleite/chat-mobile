@@ -1,14 +1,10 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  TextInput as NativeTextInput,
-  Text,
-} from 'react-native'
+import { View, TextInput as NativeTextInput, Text } from 'react-native'
 import { validate } from '../../../utils/validation'
 import COLORS from '../../../constants/colors'
 import { ValueType } from '../../../types'
 import { FormElementNames } from '../../../constants/formElementNames'
+import styles from './styles'
 
 type KeyboardType =
   | 'default'
@@ -50,30 +46,6 @@ interface TextInputProps {
   formValidationVisibility?: boolean
   onChange?: (value: string) => void
 }
-
-const styles = StyleSheet.create({
-  label: {
-    paddingBottom: 10,
-    color: COLORS.text.lightBlue,
-  },
-  textInput: {
-    paddingLeft: 14,
-    borderRadius: 4,
-    color: COLORS.text.white,
-  },
-  defaultTextInput: {
-    backgroundColor: COLORS.navy.dark,
-  },
-  clearTextInput: {
-    backgroundColor: 'transparent',
-  },
-  validationError: {
-    marginTop: 6,
-    color: COLORS.red.medium,
-    fontSize: 12,
-    fontStyle: 'italic',
-  },
-})
 
 const TextInput: React.FC<TextInputProps> = ({
   name,

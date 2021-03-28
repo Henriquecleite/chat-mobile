@@ -1,46 +1,15 @@
 import React, { useState } from 'react'
-import {
-  StyleSheet,
-  View,
-  StatusBar,
-  Button,
-  ActivityIndicator,
-} from 'react-native'
+import { View, StatusBar, Button, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
 import { useDispatch } from 'react-redux'
-import TextInput from '../components/commons/textInput'
-import colors from '../constants/colors'
-import { email, password, name } from '../constants/formElementNames'
-import { isFormValid } from '../utils/validation'
-import { signupRequest } from '../services/auth'
-import { setUserId } from '../store/actions'
-
-const styles = StyleSheet.create({
-  signinScreen: {
-    flex: 1,
-    backgroundColor: colors.navy.darker,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  signinForm: {
-    width: 300,
-    marginVertical: 0,
-    marginHorizontal: 16,
-    paddingHorizontal: 32,
-    paddingBottom: 32,
-    borderRadius: 4,
-    backgroundColor: colors.navy.light,
-  },
-  formElementWrapper: {
-    paddingTop: 32,
-  },
-  activityIndicatorWrapper: {
-    position: 'absolute',
-    top: '48%',
-    left: '54%',
-  },
-})
+import TextInput from '../../components/commons/textInput'
+import COLORS from '../../constants/colors'
+import { email, password, name } from '../../constants/formElementNames'
+import { isFormValid } from '../../utils/validation'
+import { signupRequest } from '../../services/auth'
+import { setUserId } from '../../store/actions'
+import styles from './styles'
 
 const validationErrorMessages = {
   [email]: 'This email address already exists',
@@ -119,7 +88,7 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
   return (
     <View style={styles.signinScreen}>
-      <StatusBar backgroundColor={colors.navy.darkest} />
+      <StatusBar backgroundColor={COLORS.navy.darkest} />
       <View style={styles.signinForm}>
         <View style={styles.formElementWrapper}>
           <TextInput
@@ -164,13 +133,13 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
           <Button
             onPress={handleClickOnSignupButton}
             title="Sign up"
-            color={colors.purple.medium}
+            color={COLORS.purple.medium}
           />
         </View>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator
             animating={loading}
-            color={colors.white}
+            color={COLORS.white}
             size="large"
           />
         </View>

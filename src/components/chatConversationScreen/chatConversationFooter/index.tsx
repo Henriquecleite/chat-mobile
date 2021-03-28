@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,24 +10,7 @@ import { Conversations, Conversation } from '../../../types'
 import TextInput from '../../commons/textInput'
 import { updateConversations } from '../../../store/actions'
 import { RootState } from '../../../store/reducer'
-
-const styles = StyleSheet.create({
-  chatConversationFooterWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: COLORS.navy.light,
-  },
-  messageTextInputWrapper: {
-    flex: 1,
-  },
-  sendButtonWrapper: {
-    marginHorizontal: 10,
-  },
-})
+import styles from './styles'
 
 interface ChatConversationFooterProps {
   conversationSelected: Conversation

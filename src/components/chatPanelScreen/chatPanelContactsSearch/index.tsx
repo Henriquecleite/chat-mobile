@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/vendor/types'
@@ -18,31 +18,7 @@ import {
   updateConversations,
   setConversationSelectedId,
 } from '../../../store/actions'
-
-const styles = StyleSheet.create({
-  chatPanelContactsSearchWrapper: {
-    flex: 1,
-    backgroundColor: COLORS.navy.medium,
-  },
-  chatPanelSearchBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.navy.dark,
-  },
-  contactTextInputWrapper: {
-    flex: 1,
-    marginLeft: 8,
-  },
-  noContactsFound: {
-    marginTop: 24,
-    color: COLORS.text.lightBlue,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-})
+import styles from './styles'
 
 interface ChatPanelContactsSearchProps {
   setChatPanelModeToConversations: () => void
