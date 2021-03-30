@@ -9,7 +9,7 @@ import { addMessageRequest } from '../../../services/conversation'
 import { Conversations, Conversation } from '../../../types'
 import TextInput from '../../commons/textInput'
 import { updateConversations } from '../../../store/actions'
-import { RootState } from '../../../store/reducer'
+import { RootState } from '../../../store/reducers'
 import styles from './styles'
 
 interface ChatConversationFooterProps {
@@ -21,7 +21,7 @@ const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
   conversationSelected,
   conversations,
 }) => {
-  const [userId] = useSelector((state: RootState) => [state.userId])
+  const [userId] = useSelector((state: RootState) => [state.general.userId])
 
   const dispatch = useDispatch()
 

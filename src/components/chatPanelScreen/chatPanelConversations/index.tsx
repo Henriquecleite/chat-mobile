@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/vendor/types'
 import { NavigationParams, NavigationRoute } from 'react-navigation'
 import ChatPanelContact from '../chatPanelContact'
-import { RootState } from '../../../store/reducer'
+import { RootState } from '../../../store/reducers'
 import { setConversationSelectedId } from '../../../store/actions'
 import styles from './styles'
 
@@ -19,7 +19,7 @@ const ChatPanelConversations: React.FC<ChatPanelConversationsProps> = ({
   navigation,
 }) => {
   const [conversations] = useSelector((state: RootState) => [
-    state.conversations,
+    state.general.conversations,
   ])
 
   const dispatch = useDispatch()

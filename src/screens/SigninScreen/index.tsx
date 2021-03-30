@@ -9,7 +9,7 @@ import { email, password } from '../../constants/formElementNames'
 import { isFormValid } from '../../utils/validation'
 import { signin, resetSigninData } from '../../store/actions'
 import styles from './styles'
-import { RootState } from '../../store/reducer'
+import { RootState } from '../../store/reducers'
 
 const validationErrorMessages = {
   [email]: 'Invalid email address',
@@ -42,10 +42,10 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     signinSuccess,
     signinFailure,
   ] = useSelector((state: RootState) => [
-    state.userName,
-    state.signinLoading,
-    state.signinSuccess,
-    state.signinFailure,
+    state.general.userName,
+    state.signin.signinLoading,
+    state.signin.signinSuccess,
+    state.signin.signinFailure,
   ])
 
   const dispatch = useDispatch()

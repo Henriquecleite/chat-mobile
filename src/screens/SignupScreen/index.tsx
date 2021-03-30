@@ -61,11 +61,9 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
 
       if (response.success) {
         const {
-          data: { userId, userName, token },
+          data: { userId, token },
         } = response
 
-        await AsyncStorage.setItem('userId', userId)
-        await AsyncStorage.setItem('userName', userName)
         await AsyncStorage.setItem('token', token)
 
         dispatch(setUserId(userId))

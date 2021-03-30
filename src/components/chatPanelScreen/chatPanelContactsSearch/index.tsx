@@ -13,7 +13,7 @@ import getUsersRequest from '../../../services/user'
 import { createConversationRequest } from '../../../services/conversation'
 import { validate } from '../../../utils/validation'
 import { SearchedContact } from '../../../types'
-import { RootState } from '../../../store/reducer'
+import { RootState } from '../../../store/reducers'
 import {
   updateConversations,
   setConversationSelectedId,
@@ -33,8 +33,8 @@ const ChatPanelContactsSearch: React.FC<ChatPanelContactsSearchProps> = ({
   navigation,
 }) => {
   const [userId, conversations] = useSelector((state: RootState) => [
-    state.userId,
-    state.conversations,
+    state.general.userId,
+    state.general.conversations,
   ])
 
   const dispatch = useDispatch()

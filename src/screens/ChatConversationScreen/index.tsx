@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import COLORS from '../../constants/colors'
 import ChatConversationMessages from '../../components/chatConversationScreen/chatConversationMessages'
 import ChatConversationFooter from '../../components/chatConversationScreen/chatConversationFooter'
-import { RootState } from '../../store/reducer'
+import { RootState } from '../../store/reducers'
 import { Conversation } from '../../types'
 import styles from './styles'
 
@@ -17,9 +17,9 @@ const ChatConversationScreen: NavigationStackScreenComponent = ({
     conversations,
     conversationSelectedId,
   ] = useSelector((state: RootState) => [
-    state.userId,
-    state.conversations,
-    state.conversationSelectedId,
+    state.general.userId,
+    state.general.conversations,
+    state.general.conversationSelectedId,
   ])
 
   const conversationSelected = conversations.find(

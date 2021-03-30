@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
 import Toast from 'react-native-toast-message'
-import reducer from './src/store/reducer'
+import reducer from './src/store/reducers'
 import rootSaga from './src/store/sagas'
 import Navigator from './src/navigation/Navigator'
 
