@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StatusBar, Button, ActivityIndicator, Text } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import Toast from 'react-native-toast-message'
 import TextInput from '../../components/commons/textInput'
 import COLORS from '../../constants/colors'
 import { email, password } from '../../constants/formElementNames'
 import { isFormValid } from '../../utils/validation'
-import { signinRequest } from '../../services/auth'
-import { setUserId, cons } from '../../store/actions'
+import { signin, resetSigninData } from '../../store/actions'
 import styles from './styles'
+import { RootState } from '../../store/reducer'
 
 const validationErrorMessages = {
   [email]: 'Invalid email address',
@@ -36,9 +36,37 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     setFormValidationVisibility,
   ] = useState<boolean>(false)
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [
+    userName,
+    signinLoading,
+    signinSuccess,
+    signinFailure,
+  ] = useSelector((state: RootState) => [
+    state.userName,
+    state.signinLoading,
+    state.signinSuccess,
+    state.signinFailure,
+  ])
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (signinSuccess) {
+      navigation.navigate('ChatPanel', {
+        userName,
+      })
+    } else if (signinFailure) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Invalid email or password',
+      })
+    }
+
+    if (signinSuccess || signinFailure) {
+      dispatch(resetSigninData())
+    }
+  }, [signinSuccess, signinFailure])
 
   const handleClickOnSigninButton = async () => {
     if (!formValidationVisibility) {
@@ -46,46 +74,7 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (isFormValid(formElementsValidation)) {
-      setLoading(true)
-
-      const response = await signinRequest(
-        formElementsValue[email],
-        formElementsValue[password]
-      )
-
-      setLoading(false)
-
-      if (response.success) {
-        const {
-          data: { userId, userName, token },
-        } = response
-
-        await AsyncStorage.setItem('userId', userId)
-        await AsyncStorage.setItem('userName', userName)
-        await AsyncStorage.setItem('token', token)
-
-        dispatch(setUserId(userId))
-
-        navigation.navigate('ChatPanel', {
-          userName,
-        })
-      } else {
-        const {
-          data: { message },
-        } = response
-
-        if (message === 'email incorrect') {
-          setFormElementsValidation({
-            ...formElementsValidation,
-            [email]: false,
-          })
-        } else if (message === 'password incorrect') {
-          setFormElementsValidation({
-            ...formElementsValidation,
-            [password]: false,
-          })
-        }
-      }
+      dispatch(signin(formElementsValue[email], formElementsValue[password]))
     }
   }
 
@@ -131,15 +120,14 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
           <Text style={styles.signupText}>Don't have an account?</Text>
           <Text
             style={styles.signupButton}
-            onPress={() => dispatch(cons())}
-            // onPress={() => navigation.navigate('Signup')}
+            onPress={() => navigation.navigate('Signup')}
           >
             Sign Up
           </Text>
         </View>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator
-            animating={loading}
+            animating={signinLoading}
             color={COLORS.white}
             size="large"
           />

@@ -15,6 +15,16 @@ interface SetConversationSelectedIdAction {
   conversationSelectedId: string
 }
 
+export interface SigninAction {
+  type: 'SIGNIN'
+  email: string
+  password: string
+}
+
+export interface ResetSigninDataAction {
+  type: 'RESET_SIGNIN_DATA'
+}
+
 interface UpdateConversationsAction {
   type: 'UPDATE_CONVERSATIONS'
   conversations: Conversations
@@ -24,6 +34,7 @@ export type Actions =
   | SetUserIdAction
   | SetConversationsAction
   | SetConversationSelectedIdAction
+  | SigninAction
   | UpdateConversationsAction
 
 export const setUserId = (userId: UserId): SetUserIdAction => {
@@ -42,6 +53,20 @@ export const setConversationSelectedId = (
   return {
     type: 'SET_CONVERSATION_SELECTED_ID',
     conversationSelectedId: conversationId,
+  }
+}
+
+export const signin = (email: string, password: string): SigninAction => {
+  return {
+    type: 'SIGNIN',
+    email,
+    password,
+  }
+}
+
+export const resetSigninData = (): ResetSigninDataAction => {
+  return {
+    type: 'RESET_SIGNIN_DATA',
   }
 }
 
