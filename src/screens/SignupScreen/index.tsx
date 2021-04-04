@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StatusBar, Button, ActivityIndicator } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationStackScreenComponent } from 'react-navigation-stack'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import Toast from 'react-native-toast-message'
 import TextInput from '../../components/commons/textInput'
 import COLORS from '../../constants/colors'
 import { email, password, name } from '../../constants/formElementNames'
 import { isFormValid } from '../../utils/validation'
-import { signupRequest } from '../../services/auth'
-import { setUserId } from '../../store/actions'
+import { signup, setSignupLoading, resetSignupData } from '../../store/actions'
 import styles from './styles'
+import { RootState } from '../../store/reducers'
 
 const validationErrorMessages = {
   [email]: 'This email address already exists',
@@ -39,9 +39,37 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
     setFormValidationVisibility,
   ] = useState<boolean>(false)
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [
+    userName,
+    signupLoading,
+    signupSuccess,
+    signupFailure,
+  ] = useSelector((state: RootState) => [
+    state.general.userName,
+    state.signup.signupLoading,
+    state.signup.signupSuccess,
+    state.signup.signupFailure,
+  ])
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (signupSuccess) {
+      navigation.navigate('ChatPanel', {
+        userName,
+      })
+    } else if (signupFailure) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'This email address already exists',
+      })
+    }
+
+    if (signupSuccess || signupFailure) {
+      dispatch(resetSignupData())
+    }
+  }, [signupSuccess, signupFailure])
 
   const handleClickOnSignupButton = async () => {
     if (!formValidationVisibility) {
@@ -49,38 +77,15 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (isFormValid(formElementsValidation)) {
-      setLoading(true)
+      dispatch(setSignupLoading())
 
-      const response = await signupRequest(
-        formElementsValue[email],
-        formElementsValue[name],
-        formElementsValue[password]
+      dispatch(
+        signup(
+          formElementsValue[email],
+          formElementsValue[name],
+          formElementsValue[password]
+        )
       )
-
-      setLoading(false)
-
-      if (response.success) {
-        const {
-          data: { userId, token },
-        } = response
-
-        await AsyncStorage.setItem('token', token)
-
-        dispatch(setUserId(userId))
-
-        navigation.navigate('ChatPanel')
-      } else {
-        const {
-          data: { message },
-        } = response
-
-        if (message === 'email address already exists') {
-          setFormElementsValidation({
-            ...formElementsValidation,
-            [email]: false,
-          })
-        }
-      }
     }
   }
 
@@ -136,7 +141,7 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
         </View>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator
-            animating={loading}
+            animating={signupLoading}
             color={COLORS.white}
             size="large"
           />

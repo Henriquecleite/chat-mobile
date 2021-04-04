@@ -1,4 +1,4 @@
-import { Actions } from '../actions'
+import { SigninActions } from '../actions'
 
 export interface SigninState {
   signinLoading: boolean
@@ -12,9 +12,9 @@ const initialState: SigninState = {
   signinFailure: false,
 }
 
-export default (state = initialState, action: Actions) => {
+export default (state = initialState, action: SigninActions) => {
   switch (action.type) {
-    case 'SIGNIN_LOADING':
+    case 'SET_SIGNIN_LOADING':
       return {
         ...state,
         signinLoading: true,

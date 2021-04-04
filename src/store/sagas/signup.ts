@@ -1,10 +1,10 @@
 import { takeEvery, put, all, call } from 'redux-saga/effects'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { signinRequest } from '../../services/auth'
-import { SigninAction } from '../actions'
+import { signupRequest } from '../../services/auth'
+import { SignupAction } from '../actions/signup'
 
-function* signin({ email, password }: SigninAction) {
-  const response = yield call(signinRequest, email, password)
+function* signup({ email, name, password }: SignupAction) {
+  const response = yield call(signupRequest, email, name, password)
 
   if (response.success) {
     const {
@@ -17,12 +17,12 @@ function* signin({ email, password }: SigninAction) {
       put({ type: 'SET_USER_NAME', userName }),
     ])
 
-    yield put({ type: 'SIGNIN_SUCCESS' })
+    yield put({ type: 'SIGNUP_SUCCESS' })
   } else {
-    yield put({ type: 'SIGNIN_FAILURE' })
+    yield put({ type: 'SIGNUP_FAILURE' })
   }
 }
 
-export default function* signinSaga() {
-  yield all([takeEvery('SIGNIN', signin)])
+export default function* signupSaga() {
+  yield all([takeEvery('SIGNUP', signup)])
 }

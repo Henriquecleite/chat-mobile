@@ -7,7 +7,7 @@ import TextInput from '../../components/commons/textInput'
 import COLORS from '../../constants/colors'
 import { email, password } from '../../constants/formElementNames'
 import { isFormValid } from '../../utils/validation'
-import { signin, resetSigninData } from '../../store/actions'
+import { signin, setSigninLoading, resetSigninData } from '../../store/actions'
 import styles from './styles'
 import { RootState } from '../../store/reducers'
 
@@ -74,6 +74,8 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     }
 
     if (isFormValid(formElementsValidation)) {
+      dispatch(setSigninLoading())
+
       dispatch(signin(formElementsValue[email], formElementsValue[password]))
     }
   }
