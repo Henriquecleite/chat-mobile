@@ -1,22 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { StackNavigationProp } from 'react-navigation-stack/lib/typescript/src/vendor/types'
 import { NavigationRoute, NavigationParams } from 'react-navigation'
 import { useSelector, useDispatch } from 'react-redux'
+import Toast from 'react-native-toast-message'
 import ChatPanelContact from '../chatPanelContact'
 import COLORS from '../../../constants/colors'
 import TextInput from '../../commons/textInput'
 import { text } from '../../../constants/formElementNames'
-import getUsersRequest from '../../../services/user'
-import { createConversationRequest } from '../../../services/conversation'
 import { validate } from '../../../utils/validation'
-import { SearchedContact } from '../../../types'
 import { RootState } from '../../../store/reducers'
 import {
-  updateConversations,
-  setConversationSelectedId,
+  fetchContacts,
+  resetCreateConversationData,
+  createConversation,
 } from '../../../store/actions'
 import styles from './styles'
 
@@ -32,9 +31,16 @@ const ChatPanelContactsSearch: React.FC<ChatPanelContactsSearchProps> = ({
   setChatPanelModeToConversations,
   navigation,
 }) => {
-  const [userId, conversations] = useSelector((state: RootState) => [
-    state.general.userId,
-    state.general.conversations,
+  const [
+    contacts,
+    alreadySearched,
+    createConversationSuccess,
+    createConversationFailure,
+  ] = useSelector((state: RootState) => [
+    state.contacts.contacts,
+    state.contacts.alreadySearched,
+    state.conversations.createConversationSuccess,
+    state.conversations.createConversationFailure,
   ])
 
   const dispatch = useDispatch()
@@ -45,49 +51,32 @@ const ChatPanelContactsSearch: React.FC<ChatPanelContactsSearchProps> = ({
     [text]: '',
   })
 
-  const [searchedContacts, setSearchedContacts] = useState<SearchedContact[]>(
-    []
-  )
+  useEffect(() => {
+    if (createConversationSuccess) {
+      setChatPanelModeToConversations()
 
-  const [alreadySearched, setAlreadySearched] = useState<boolean>(false)
+      navigation.navigate('ChatConversation')
+    } else if (createConversationFailure) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Error when adding conversation',
+      })
+    }
+
+    if (createConversationSuccess || createConversationFailure) {
+      dispatch(resetCreateConversationData())
+    }
+  }, [createConversationSuccess, createConversationFailure])
 
   const searchContacts = async (email: string) => {
     if (validate(email, 'email')) {
-      const response = await getUsersRequest(email)
-
-      if (response.success) {
-        const currentUserContacts = conversations.map(
-          (conversation) => conversation.contactId
-        )
-
-        const fetchedContacts = response.data.users
-
-        const fetchedContactsFiltered = fetchedContacts.filter(
-          (contact: SearchedContact) =>
-            !currentUserContacts.includes(contact._id) && contact._id !== userId
-        )
-
-        setSearchedContacts(fetchedContactsFiltered)
-      }
-
-      setAlreadySearched(true)
+      dispatch(fetchContacts(email))
     }
   }
 
   const handleClickOnContact = async (contactId: string) => {
-    const response = await createConversationRequest(contactId)
-
-    if (response.success) {
-      const conversation = response.data
-
-      dispatch(updateConversations(conversations, conversation))
-
-      dispatch(setConversationSelectedId(conversation._id))
-
-      setChatPanelModeToConversations()
-
-      navigation.navigate('ChatConversation')
-    }
+    dispatch(createConversation(contactId))
   }
 
   return (
@@ -107,8 +96,8 @@ const ChatPanelContactsSearch: React.FC<ChatPanelContactsSearchProps> = ({
           />
         </View>
       </View>
-      {!alreadySearched || searchedContacts.length ? (
-        searchedContacts.map((contact) => (
+      {!alreadySearched || contacts.length ? (
+        contacts.map((contact) => (
           <ChatPanelContact
             key={contact._id}
             contactName={contact.name}

@@ -1,7 +1,13 @@
 import { takeEvery, put, all, call } from 'redux-saga/effects'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { signinRequest } from '../../services/auth'
-import { SigninAction } from '../actions'
+import {
+  SigninAction,
+  SetUserIdAction,
+  SetUserNameAction,
+  SigninSuccessAction,
+  SigninFailureAction,
+} from '../actions'
 
 function* signin({ email, password }: SigninAction) {
   const response = yield call(signinRequest, email, password)
@@ -13,13 +19,13 @@ function* signin({ email, password }: SigninAction) {
 
     yield all([
       call(AsyncStorage.setItem, 'token', token),
-      put({ type: 'SET_USER_ID', userId }),
-      put({ type: 'SET_USER_NAME', userName }),
+      put({ type: 'SET_USER_ID', userId } as SetUserIdAction),
+      put({ type: 'SET_USER_NAME', userName } as SetUserNameAction),
     ])
 
-    yield put({ type: 'SIGNIN_SUCCESS' })
+    yield put({ type: 'SIGNIN_SUCCESS' } as SigninSuccessAction)
   } else {
-    yield put({ type: 'SIGNIN_FAILURE' })
+    yield put({ type: 'SIGNIN_FAILURE' } as SigninFailureAction)
   }
 }
 

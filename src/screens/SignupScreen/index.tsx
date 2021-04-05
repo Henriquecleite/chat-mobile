@@ -45,7 +45,7 @@ const SignupScreen: NavigationStackScreenComponent = ({ navigation }) => {
     signupSuccess,
     signupFailure,
   ] = useSelector((state: RootState) => [
-    state.general.userName,
+    state.user.userName,
     state.signup.signupLoading,
     state.signup.signupSuccess,
     state.signup.signupFailure,

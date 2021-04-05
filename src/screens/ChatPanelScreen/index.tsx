@@ -7,8 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import COLORS from '../../constants/colors'
 import ChatPanelConversations from '../../components/chatPanelScreen/chatPanelConversations'
 import ChatPanelContactsSearch from '../../components/chatPanelScreen/chatPanelContactsSearch'
-import { getConversationsRequest } from '../../services/conversation'
-import { setConversations } from '../../store/actions'
+import { fetchConversations } from '../../store/actions'
 import { ChatPanelMode } from '../../types'
 import styles from './styles'
 
@@ -20,23 +19,13 @@ const ChatPanelScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchConversations = async () => {
-      const { success, data } = await getConversationsRequest()
-
-      if (success) {
-        dispatch(setConversations(data.conversations))
-      } else {
-        const error = data
-
-        if (error === 'jwt malformed') {
-          navigation.navigate('Signin')
-        }
-      }
+    const callFetchConversations = () => {
+      dispatch(fetchConversations())
     }
 
-    fetchConversations()
+    callFetchConversations()
 
-    setInterval(fetchConversations, 10000)
+    setInterval(callFetchConversations, 10000)
   }, [])
 
   useEffect(() => {

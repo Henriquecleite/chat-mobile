@@ -1,27 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
+import Toast from 'react-native-toast-message'
 import COLORS from '../../../constants/colors'
 import { message } from '../../../constants/formElementNames'
-import { addMessageRequest } from '../../../services/conversation'
-import { Conversations, Conversation } from '../../../types'
+import { Conversation } from '../../../types'
 import TextInput from '../../commons/textInput'
-import { updateConversations } from '../../../store/actions'
+import { resetSendMessageData, sendMessage } from '../../../store/actions'
 import { RootState } from '../../../store/reducers'
 import styles from './styles'
 
 interface ChatConversationFooterProps {
   conversationSelected: Conversation
-  conversations: Conversations
 }
 
 const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
   conversationSelected,
-  conversations,
 }) => {
-  const [userId] = useSelector((state: RootState) => [state.general.userId])
+  const [
+    sendMessageSuccess,
+    sendMessageFailure,
+  ] = useSelector((state: RootState) => [
+    state.conversations.sendMessageSuccess,
+    state.conversations.sendMessageFailure,
+  ])
 
   const dispatch = useDispatch()
 
@@ -35,42 +39,31 @@ const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
     [message]: defaultFormElementsValue[message],
   })
 
-  const { _id: conversationSelectedId, messages } = conversationSelected
+  const { _id: conversationSelectedId } = conversationSelected
 
-  const sendMessage = async () => {
+  useEffect(() => {
+    if (sendMessageFailure) {
+      Toast.show({
+        type: 'error',
+        position: 'bottom',
+        text1: 'Error when sending message',
+      })
+    }
+
+    if (sendMessageSuccess || sendMessageFailure) {
+      dispatch(resetSendMessageData())
+    }
+  }, [sendMessageSuccess, sendMessageFailure])
+
+  const handleClickOnSendButton = async () => {
     const messageContent = formElementsValue[message]
 
     if (messageContent && conversationSelectedId) {
-      const date = new Date().getTime()
+      dispatch(sendMessage(messageContent, conversationSelected))
 
-      const dateString = date.toString()
-
-      const newConversation: Conversation = {
-        ...conversationSelected,
-        messages: [
-          ...messages,
-          {
-            _id: Math.random().toString(),
-            content: messageContent,
-            date,
-            userId,
-          },
-        ],
-      }
-
-      dispatch(updateConversations(conversations, newConversation))
-
-      const messageResponse = await addMessageRequest(
-        conversationSelectedId,
-        dateString,
-        messageContent
-      )
-
-      if (messageResponse.success) {
-        setFormElementsValue({
-          [message]: defaultFormElementsValue[message],
-        })
-      }
+      setFormElementsValue({
+        [message]: defaultFormElementsValue[message],
+      })
     }
   }
 
@@ -86,7 +79,7 @@ const ChatConversationFooter: React.FC<ChatConversationFooterProps> = ({
         />
       </View>
       <View style={styles.sendButtonWrapper}>
-        <TouchableOpacity onPress={sendMessage}>
+        <TouchableOpacity onPress={handleClickOnSendButton}>
           <Ionicons name="md-send" color={COLORS.white} size={26} />
         </TouchableOpacity>
       </View>

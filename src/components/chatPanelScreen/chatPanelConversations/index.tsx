@@ -19,7 +19,7 @@ const ChatPanelConversations: React.FC<ChatPanelConversationsProps> = ({
   navigation,
 }) => {
   const [conversations] = useSelector((state: RootState) => [
-    state.general.conversations,
+    state.conversations.conversations,
   ])
 
   const dispatch = useDispatch()

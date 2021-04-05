@@ -17,9 +17,9 @@ const ChatConversationScreen: NavigationStackScreenComponent = ({
     conversations,
     conversationSelectedId,
   ] = useSelector((state: RootState) => [
-    state.general.userId,
-    state.general.conversations,
-    state.general.conversationSelectedId,
+    state.user.userId,
+    state.conversations.conversations,
+    state.conversations.conversationSelectedId,
   ])
 
   const conversationSelected = conversations.find(
@@ -36,10 +36,7 @@ const ChatConversationScreen: NavigationStackScreenComponent = ({
         userId={userId}
         messages={conversationSelected.messages}
       />
-      <ChatConversationFooter
-        conversationSelected={conversationSelected}
-        conversations={conversations}
-      />
+      <ChatConversationFooter conversationSelected={conversationSelected} />
     </View>
   )
 }

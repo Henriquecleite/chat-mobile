@@ -20,8 +20,8 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
   const [formElementsValue, setFormElementsValue] = useState<
     Record<string, string>
   >({
-    [email]: 'a@a.com', // return to ''
-    [password]: '1234',
+    [email]: 'd@d.com', // return to ''
+    [password]: '123',
   })
 
   const [formElementsValidation, setFormElementsValidation] = useState<
@@ -42,7 +42,7 @@ const SigninScreen: NavigationStackScreenComponent = ({ navigation }) => {
     signinSuccess,
     signinFailure,
   ] = useSelector((state: RootState) => [
-    state.general.userName,
+    state.user.userName,
     state.signin.signinLoading,
     state.signin.signinSuccess,
     state.signin.signinFailure,
